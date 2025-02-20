@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAL RANDI WEB CRACK BY RC</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .particle-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .glowing-border {
+            border: 3px solid red;
+            box-shadow: 0 0 10px red;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            background: red;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 0 10px red;
+        }
+        .list-container {
+            width: 80%;
+            height: 150px;
+            overflow-y: auto;
+            border: 2px solid red;
+            padding: 10px;
+            margin-top: 10px;
+            box-shadow: 0 0 10px red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <canvas class="particle-container"></canvas>
+
+    <div class="glowing-border">
+        <h2 id="textview1">KAL RANDI WEB CRACK BY DANGER</h2>
+        <h3 id="textview2">Loading...</h3>
+        <h3 id="textview3">--:--</h3>
+        <h3 id="textview4">Result:</h3>
+        <button class="button" id="checkResult">Check Result</button>
+        <button class="button" id="history">History</button>
+    </div>
+
+    <div class="list-container" id="listView"></div>
+</div>
+
+<script>
+    const canvas = document.querySelector(".particle-container");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 4 + 1;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.opacity = Math.random();
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+            if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+        }
+
+        draw() {
+            ctx.fillStyle = `rgba(255, 0, 0, ${this.opacity})`;
+            ctx.shadowColor = "red";
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+
+    let textview2 = document.getElementById("textview2");
+    let textview3 = document.getElementById("textview3");
+    let listView = document.getElementById("listView");
+    let checkResultButton = document.getElementById("checkResult");
+    let historyButton = document.getElementById("history");
+
+    function updateTimer() {
+        let now = new Date();
+        let seconds = now.getUTCSeconds();
+        let remainingSeconds = 60 - seconds;
+        let minutes = now.getUTCMinutes();
+        let hours = now.getUTCHours();
+        let totalMinutes = hours * 60 + minutes;
+
+        let periodNumber = `${now.getUTCFullYear()}${(now.getUTCMonth() + 1).toString().padStart(2, '0')}${now.getUTCDate().toString().padStart(2, '0')}1000${(10001 + totalMinutes)}`;
+        textview2.innerText = periodNumber;
+
+        let formattedTime = `   ${String(0).padStart(2, '0')}  :  ${String(remainingSeconds).padStart(2, '0')}`;
+        textview3.innerText = formattedTime.replace(/(?<=\d)(?=\d)/g, " ");
+    }
+
+    setInterval(updateTimer, 1000);
+
+    let lastPeriod = "";
+
+    checkResultButton.addEventListener("click", () => {
+        let currentPeriod = textview2.innerText;
+        if (currentPeriod !== lastPeriod) {
+            lastPeriod = currentPeriod;
+            let result = Math.random() > 0.5 ? "BIG" : "SMALL";
+            textview4.innerText = `Result: ${result}`;
+            let resultItem = document.createElement("div");
+            resultItem.innerText = `${currentPeriod}: ${result}`;
+            listView.appendChild(resultItem);
+        } else {
+            textview4.innerText = "Please wait for next period";
+        }
+    });
+
+    historyButton.addEventListener("click", () => {
+        listView.innerHTML = "";
+    });
+
+</script>
+</body>
+</html>
