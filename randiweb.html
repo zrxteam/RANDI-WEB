@@ -1,174 +1,127 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAL RANDI WEB CRACK BY RC</title>
+    <title>TS RANDI Predictor</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
-            background: black;
-            color: white;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: url('https://wallpapercave.com/wp/wp14016731.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
         }
-        .container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
+        .header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 18px;
+        }
+        .content {
+            margin-top: 50px;
+        }
+        .box {
+            margin: 20px auto;
+            width: 200px;
+            height: 100px;
+            background-color: black;
+            display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .particle-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .glowing-border {
-            border: 3px solid red;
-            box-shadow: 0 0 10px red;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .button {
-            margin: 10px;
-            padding: 10px 20px;
-            border: none;
-            background: red;
             color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: gray;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            box-shadow: 0 0 10px red;
         }
-        .list-container {
-            width: 80%;
-            height: 150px;
-            overflow-y: auto;
-            border: 2px solid red;
-            padding: 10px;
-            margin-top: 10px;
-            box-shadow: 0 0 10px red;
+        .btn:hover {
+            background-color: darkgray;
+        }
+        .disabled {
+            background-color: darkgray;
+            cursor: not-allowed;
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div>Main</div>
+        <div>Profile</div>
+    </div>
+    <div class="content">
+        <h1>TS RAND PREDICTOR </h1>
+        <div class="box" id="resultBox">0</div>
+        <button class="btn" id="toggleButton" onclick="generateBiasedRandomNumber()">CHECK RESULT</button>
 
-<div class="container">
-    <canvas class="particle-container"></canvas>
-
-    <div class="glowing-border">
-        <h2 id="textview1">KAL RANDI WEB CRACK BY RC</h2>
-        <h3 id="textview2">Loading...</h3>
-        <h3 id="textview3">--:--</h3>
-        <h3 id="textview4">Result:</h3>
-        <button class="button" id="checkResult">Check Result</button>
-        <button class="button" id="history">History</button>
+        <div class="stats">
+            Next period in: <span id="waitTime">Ready</span>
+        </div>
     </div>
 
-    <div class="list-container" id="listView"></div>
-</div>
+    <script>
+        let isWaiting = false;
 
-<script>
-    const canvas = document.querySelector(".particle-container");
-    const ctx = canvas.getContext("2d");
+        function generateBiasedRandomNumber() {
+            if (isWaiting) {
+                alert("Please wait for the next period.");
+                return;
+            }
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+            const box = document.getElementById('resultBox');
+            const button = document.getElementById('toggleButton');
 
-    let particles = [];
+            // Generate a weighted random number (70% chance for BIG)
+            const isBig = Math.random() < 0.7;
+            let randomNumber = isBig ? Math.floor(Math.random() * 5) + 5 : Math.floor(Math.random() * 5);
+            const resultText = randomNumber >= 5 ? "BIG" : "SMALL";
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 4 + 1;
-            this.speedX = Math.random() * 3 - 1.5;
-            this.speedY = Math.random() * 3 - 1.5;
-            this.opacity = Math.random();
+            box.textContent = `${randomNumber} - ${resultText}`;
+
+            // Start wait time before next period
+            waitForNextPeriod();
         }
 
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
-            if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+        function waitForNextPeriod() {
+            isWaiting = true;
+            const button = document.getElementById('toggleButton');
+            const waitTimeDisplay = document.getElementById('waitTime');
+            button.classList.add("disabled");
+            button.disabled = true;
+
+            let waitSeconds = 10;
+            waitTimeDisplay.textContent = `${waitSeconds}s`;
+
+            const countdown = setInterval(() => {
+                waitSeconds--;
+                waitTimeDisplay.textContent = `${waitSeconds}s`;
+                if (waitSeconds <= 0) {
+                    clearInterval(countdown);
+                    isWaiting = false;
+                    button.classList.remove("disabled");
+                    button.disabled = false;
+                    waitTimeDisplay.textContent = "Ready";
+                }
+            }, 1000);
         }
-
-        draw() {
-            ctx.fillStyle = `rgba(255, 0, 0, ${this.opacity})`;
-            ctx.shadowColor = "red";
-            ctx.shadowBlur = 10;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function initParticles() {
-        for (let i = 0; i < 50; i++) {
-            particles.push(new Particle());
-        }
-    }
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-        requestAnimationFrame(animateParticles);
-    }
-
-    initParticles();
-    animateParticles();
-
-    let textview2 = document.getElementById("textview2");
-    let textview3 = document.getElementById("textview3");
-    let listView = document.getElementById("listView");
-    let checkResultButton = document.getElementById("checkResult");
-    let historyButton = document.getElementById("history");
-
-    function updateTimer() {
-        let now = new Date();
-        let seconds = now.getUTCSeconds();
-        let remainingSeconds = 60 - seconds;
-        let minutes = now.getUTCMinutes();
-        let hours = now.getUTCHours();
-        let totalMinutes = hours * 60 + minutes;
-
-        let periodNumber = `${now.getUTCFullYear()}${(now.getUTCMonth() + 1).toString().padStart(2, '0')}${now.getUTCDate().toString().padStart(2, '0')}1000${(10001 + totalMinutes)}`;
-        textview2.innerText = periodNumber;
-
-        let formattedTime = `   ${String(0).padStart(2, '0')}  :  ${String(remainingSeconds).padStart(2, '0')}`;
-        textview3.innerText = formattedTime.replace(/(?<=\d)(?=\d)/g, " ");
-    }
-
-    setInterval(updateTimer, 1000);
-
-    let lastPeriod = "";
-
-    checkResultButton.addEventListener("click", () => {
-        let currentPeriod = textview2.innerText;
-        if (currentPeriod !== lastPeriod) {
-            lastPeriod = currentPeriod;
-            let result = Math.random() > 0.5 ? "BIG" : "SMALL";
-            textview4.innerText = `Result: ${result}`;
-            let resultItem = document.createElement("div");
-            resultItem.innerText = `${currentPeriod}: ${result}`;
-            listView.appendChild(resultItem);
-        } else {
-            textview4.innerText = "Please wait for next period";
-        }
-    });
-
-    historyButton.addEventListener("click", () => {
-        listView.innerHTML = "";
-    });
-
-</script>
+    </script>
 </body>
 </html>
