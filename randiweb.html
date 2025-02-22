@@ -1,127 +1,145 @@
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TS RANDI Predictor</title>
+    <title>CRACK BY AARISH</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background: url('https://wallpapercave.com/wp/wp14016731.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            font-size: 18px;
-        }
-        .content {
-            margin-top: 50px;
-        }
-        .box {
-            margin: 20px auto;
-            width: 200px;
-            height: 100px;
             background-color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
-            font-size: 24px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .title {
+            font-size: 32px;
             font-weight: bold;
-            border-radius: 10px;
-        }
-        .btn {
+            color: red;
+            text-shadow: 0 0 10px red;
             margin-top: 20px;
-            padding: 10px 20px;
-            background-color: gray;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
         }
-        .btn:hover {
-            background-color: darkgray;
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            margin-top: 10px;
         }
-        .disabled {
-            background-color: darkgray;
-            cursor: not-allowed;
+
+        .timer {
+            font-size: 24px;
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
         }
-        .stats {
-            margin-top: 20px;
-            font-size: 18px;
+
+        .period {
+            font-size: 20px;
+            color: magenta;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .bet {
+            font-size: 24px;
+            color: red;
+            font-weight: bold;
+            text-shadow: 0 0 10px red;
+            margin-top: 10px;
+        }
+
+        /* Floating Yellow Dots (Particles) */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: yellow;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: floatUp 5s infinite linear;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div>Main</div>
-        <div>Profile</div>
-    </div>
-    <div class="content">
-        <h1>TS RAND PREDICTOR </h1>
-        <div class="box" id="resultBox">0</div>
-        <button class="btn" id="toggleButton" onclick="generateBiasedRandomNumber()">CHECK RESULT</button>
 
-        <div class="stats">
-            Next period in: <span id="waitTime">Ready</span>
-        </div>
-    </div>
+    <img src="https://i.ibb.co/5gZGvBCj/Picsart-25-02-21-17-01-22-619.jpg" alt="User Icon" class="icon">
+    <div class="title">SUMIT RANDI MOD</div>
+    <img src="https://i.ibb.co/G441cvkb/16741031.png" alt="Lightning Icon" class="icon">
+    <div class="timer" id="timer">00:30</div>
+    <img src="https://i.ibb.co/s4hztNz/depositphotos-57207983-stock-illustration-business-man-icon-1.webp" alt="User Icon 2" class="icon">
+    <div class="period" id="period">PERIOD: --</div>
+    
+    <img src="https://i.ibb.co/xKgrv3xZ/infobuttonon.png" alt="Info Icon" class="icon">
+    
+    <div class="bet">BET ON: <img src="https://i.ibb.co/1Y3ZdMqP/Picsart-25-02-21-17-01-48-971.jpg" alt="Timer Icon" class="icon"> <span id="result">WAITING...</span></div>
+
+    <div class="particles" id="particle-container"></div>
 
     <script>
-        let isWaiting = false;
+        function updateTimerAndPeriod() {
+            let now = new Date();
+            let utcTime = new Date(now.toUTCString());
+            
+            let seconds = utcTime.getSeconds();
+            let remainingSeconds = 60 - seconds;
+            let minutes = utcTime.getMinutes();
+            let totalMinutes = utcTime.getHours() * 60 + minutes;
 
-        function generateBiasedRandomNumber() {
-            if (isWaiting) {
-                alert("Please wait for the next period.");
-                return;
+            // Update Period Number
+            let dateStr = utcTime.getFullYear().toString() +
+                          ("0" + (utcTime.getMonth() + 1)).slice(-2) +
+                          ("0" + utcTime.getDate()).slice(-2);
+
+            let periodNumber = dateStr + "1000" + (10001 + totalMinutes);
+            document.getElementById("period").innerText = "PERIOD: " + periodNumber;
+
+            // Update Timer (00:xx Format)
+            let formattedTime = `   00  :  ${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`;
+            document.getElementById("timer").innerText = formattedTime;
+
+            // Auto-generate Big/Small result every new period
+            if (seconds === 0) {
+                let result = Math.random() < 0.5 ? "BIG" : "SMALL";
+                document.getElementById("result").innerText = result;
             }
-
-            const box = document.getElementById('resultBox');
-            const button = document.getElementById('toggleButton');
-
-            // Generate a weighted random number (70% chance for BIG)
-            const isBig = Math.random() < 0.7;
-            let randomNumber = isBig ? Math.floor(Math.random() * 5) + 5 : Math.floor(Math.random() * 5);
-            const resultText = randomNumber >= 5 ? "BIG" : "SMALL";
-
-            box.textContent = `${randomNumber} - ${resultText}`;
-
-            // Start wait time before next period
-            waitForNextPeriod();
         }
 
-        function waitForNextPeriod() {
-            isWaiting = true;
-            const button = document.getElementById('toggleButton');
-            const waitTimeDisplay = document.getElementById('waitTime');
-            button.classList.add("disabled");
-            button.disabled = true;
+        // Update timer every second
+        setInterval(updateTimerAndPeriod, 1000);
 
-            let waitSeconds = 10;
-            waitTimeDisplay.textContent = `${waitSeconds}s`;
+        // Generate Floating Yellow Particles
+        function createParticle() {
+            let particle = document.createElement("div");
+            particle.classList.add("particle");
+            particle.style.left = Math.random() * 100 + "vw";
+            particle.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.getElementById("particle-container").appendChild(particle);
 
-            const countdown = setInterval(() => {
-                waitSeconds--;
-                waitTimeDisplay.textContent = `${waitSeconds}s`;
-                if (waitSeconds <= 0) {
-                    clearInterval(countdown);
-                    isWaiting = false;
-                    button.classList.remove("disabled");
-                    button.disabled = false;
-                    waitTimeDisplay.textContent = "Ready";
-                }
-            }, 1000);
+            setTimeout(() => {
+                particle.remove();
+            }, 5000);
         }
+        setInterval(createParticle, 300);
     </script>
+
 </body>
 </html>
